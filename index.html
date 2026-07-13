@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Letter For You</title>
+<style>
+  /* ---------------------------------------------------------
+     PALETTE — drawn from the bouquet artwork
+     Peony pink:   #ec6f9b / #f7a8c4
+     Peony core:   #c4295a
+     Lily white:   #fffaf6
+     Sage leaf:    #7e9b6e / #a9c299
+     Cream ground: #fdf1ec / #f7e3da
+     Envelope rose:#e2879d
+     Wax heart:    #c93b5f
+  --------------------------------------------------------- */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  @font-face {
+    font-family: 'Fraunces-fallback';
+    src: local('Georgia');
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    font-family: 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, #fdf1ec 0%, #f7e3da 55%, #f1d6cb 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow-x: hidden;
+    color: #5b3a3f;
+  }
+
+  /* soft drifting leaves in the background, echoing the bouquet greenery */
+  .leaf-field {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.35;
+  }
+  .leaf {
+    position: absolute;
+    width: 14px;
+    height: 22px;
+    background: linear-gradient(160deg, #a9c299, #7e9b6e);
+    border-radius: 0 100% 0 100%;
+    animation: drift 14s linear infinite;
+  }
+  @keyframes drift {
+    0%   { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.5; }
+    90%  { opacity: 0.5; }
+    100% { transform: translateY(110vh) rotate(180deg); opacity: 0; }
+  }
+
+  .stage {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-family: Georgia, serif;
+    font-style: italic;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: #b5788a;
+    margin-bottom: 10px;
+  }
+
+  .title {
+    font-size: 28px;
+    color: #7a2f4a;
+    font-weight: 400;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+
+  .sub {
+    font-size: 14px;
+    color: #8a6169;
+    margin-bottom: 34px;
+    line-height: 1.6;
+  }
+
+  /* ---- wax seal, doubles as the visual "signature" element ---- */
+  .seal-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  .seal {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #e2879d, #c93b5f 70%, #a72a4d 100%);
+    box-shadow: 0 6px 18px rgba(169, 42, 77, 0.35), inset 0 -3px 6px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.6s ease;
+  }
+  .seal svg { width: 26px; height: 26px; }
+  .seal.opened {
+    transform: scale(1.12) rotate(-6deg);
+  }
+
+  /* ---- the gate card itself ---- */
+  .card {
+    background: linear-gradient(180deg, #fffaf6 0%, #fdf1ec 100%);
+    border: 1px solid #f0d3c8;
+    border-radius: 18px;
+    padding: 30px 26px;
+    box-shadow: 0 20px 40px -18px rgba(122, 47, 74, 0.25);
+  }
+
+  .question {
+    font-size: 15px;
+    color: #7a2f4a;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 13px 14px;
+    font-size: 16px;
+    font-family: Georgia, serif;
+    text-align: center;
+    letter-spacing: 0.04em;
+    border: 1.5px solid #e6c3ce;
+    border-radius: 10px;
+    background: #fffefd;
+    color: #5b3a3f;
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  input[type="text"]::placeholder {
+    color: #c9a8ae;
+    font-style: italic;
+  }
+  input[type="text"]:focus {
+    border-color: #c4295a;
+    box-shadow: 0 0 0 3px rgba(196, 41, 90, 0.12);
+  }
+
+  .shake {
+    animation: shake 0.45s ease;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(7px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(4px); }
+  }
+
+  button {
+    margin-top: 16px;
+    width: 100%;
+    padding: 13px;
+    font-family: Georgia, serif;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fffaf6;
+    background: linear-gradient(135deg, #d8567c, #b5285a);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px -10px rgba(181, 40, 90, 0.5);
+  }
+  button:active {
+    transform: translateY(0);
+  }
+
+  .msg {
+    min-height: 20px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: #b5788a;
+    font-style: italic;
+  }
+  .msg.error { color: #a8384f; }
+  .msg.success { color: #4d7a4a; }
+
+  /* reveal state */
+  .revealed {
+    animation: fadein 1s ease forwards;
+  }
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  footer {
+    margin-top: 26px;
+    font-size: 11px;
+    color: #c9a3ab;
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+<div class="leaf-field" id="leafField"></div>
+
+<div class="stage">
+  <div class="eyebrow">A Letter For You</div>
+  <div class="title">Before the bouquet opens&hellip;</div>
+  <div class="sub">One small question, just between us.</div>
+
+  <div class="seal-wrap">
+    <div class="seal" id="seal">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 21s-7.5-4.6-10-9.3C0.3 8.1 2.1 4 6 4c2.2 0 3.8 1.2 6 3.6C14.2 5.2 15.8 4 18 4c3.9 0 5.7 4.1 4 7.7C19.5 16.4 12 21 12 21z" fill="#fffaf6" opacity="0.92"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="card" id="card">
+    <div class="question" id="questionText">Enter: The day we met (DD/MM/YYYY)</div>
+    <input type="text" id="answerInput" placeholder="e.g. 27/06/2026" autocomplete="off" inputmode="numeric">
+    <button id="submitBtn">Reveal</button>
+    <div class="msg" id="msg">&nbsp;</div>
+  </div>
+
+  <footer>made with care, for you</footer>
+</div>
+
+<script>
+  // ---- CONFIGURE HERE ----
+  const CORRECT_ANSWER = "27/06/2026"; // The day we met
+  const BOUQUET_LINK = "https://thebouquet.me/PLACEHOLDER-REPLACE-WITH-YOUR-REAL-LINK";
+  // -------------------------
+
+  function normalizeDate(raw) {
+    const digits = raw.match(/\d+/g);
+    if (!digits) return null;
+    const joined = digits.join(" ");
+    const parts = joined.split(" ").filter(Boolean);
+    if (parts.length < 3) {
+      // handle fully squashed input like "27062026"
+      const all = digits.join("");
+      if (all.length === 8) {
+        return normalizeParts(all.slice(0,2), all.slice(2,4), all.slice(4,8));
+      }
+      return null;
+    }
+    return normalizeParts(parts[0], parts[1], parts[2]);
+  }
+
+  function normalizeParts(d, m, y) {
+    d = d.padStart(2, "0");
+    m = m.padStart(2, "0");
+    if (y.length === 2) y = "20" + y;
+    if (y.length !== 4) return null;
+    return `${d}/${m}/${y}`;
+  }
+
+  const targetNormalized = normalizeDate(CORRECT_ANSWER);
+
+  const input = document.getElementById('answerInput');
+  const card = document.getElementById('card');
+  const msg = document.getElementById('msg');
+  const seal = document.getElementById('seal');
+  const btn = document.getElementById('submitBtn');
+
+  function tryUnlock() {
+    const val = normalizeDate(input.value);
+    if (val && val === targetNormalized) {
+      msg.textContent = "Opening it now...";
+      msg.className = "msg success";
+      seal.classList.add('opened');
+      btn.disabled = true;
+      setTimeout(() => {
+        window.location.href = BOUQUET_LINK;
+      }, 900);
+    } else {
+      msg.textContent = "That's not quite it — try again?";
+      msg.className = "msg error";
+      card.classList.remove('shake');
+      void card.offsetWidth; // restart animation
+      card.classList.add('shake');
+    }
+  }
+
+  btn.addEventListener('click', tryUnlock);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') tryUnlock();
+  });
+
+  // gentle drifting leaves
+  const field = document.getElementById('leafField');
+  const leafCount = 10;
+  for (let i = 0; i < leafCount; i++) {
+    const leaf = document.createElement('div');
+    leaf.className = 'leaf';
+    leaf.style.left = Math.random() * 100 + 'vw';
+    leaf.style.animationDelay = (Math.random() * 14) + 's';
+    leaf.style.animationDuration = (10 + Math.random() * 8) + 's';
+    leaf.style.opacity = 0.2 + Math.random() * 0.3;
+    field.appendChild(leaf);
+  }
+</script>
+
+</body>
+</html>
