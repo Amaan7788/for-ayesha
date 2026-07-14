@@ -31,14 +31,32 @@
     font-size: 12px;
     color: #b5788a;
     margin-bottom: 24px;
+    max-height: 30px;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.5s ease, margin 0.5s ease;
+  }
+  body.letter-open .eyebrow {
+    max-height: 0;
+    opacity: 0;
+    margin-bottom: 0;
   }
 
-  /* ---------------- Bouquet (original SVG, same palette/style) ---------------- */
+  /* ---------------- Bouquet (your own photo) ---------------- */
   .bouquet {
-    width: 220px;
+    width: 200px;
     height: auto;
     margin-bottom: 8px;
     filter: drop-shadow(0 10px 18px rgba(122,47,74,0.15));
+    max-height: 260px;
+    overflow: hidden;
+    opacity: 1;
+    transition: max-height 0.6s ease, opacity 0.5s ease, margin 0.6s ease, transform 0.6s ease;
+  }
+  body.letter-open .bouquet {
+    max-height: 0;
+    opacity: 0;
+    margin-bottom: 0;
+    transform: scale(0.85);
   }
 
   /* ---------------- Envelope ---------------- */
@@ -152,13 +170,14 @@
     transform: translate(-50%, 10px);
     opacity: 0;
     z-index: 2;
-    transition: transform 0.6s ease 0.35s, opacity 0.6s ease 0.35s;
+    transition: transform 0.7s ease 0.35s, opacity 0.6s ease 0.35s, width 0.6s ease 0.35s;
     pointer-events: none;
   }
   .envelope.open .note-wrap {
-    transform: translate(-50%, -80px);
+    transform: translate(-50%, -70px);
     opacity: 1;
     pointer-events: auto;
+    width: min(320px, 88vw);
   }
 
   .note {
@@ -166,10 +185,13 @@
   }
   .note-inner {
     position: relative;
-    width: 250px;
+    width: 100%;
     min-height: 140px;
     transform-style: preserve-3d;
-    transition: transform 0.9s cubic-bezier(.4,.2,.2,1);
+    transition: transform 0.9s cubic-bezier(.4,.2,.2,1), min-height 0.6s ease 0.35s;
+  }
+  .envelope.open .note-inner {
+    min-height: 320px;
   }
   .note-inner.flipped {
     transform: rotateY(180deg);
@@ -193,7 +215,7 @@
     transform: rotateY(180deg);
     text-align: left;
     justify-content: flex-start;
-    max-height: 340px;
+    max-height: 65vh;
     overflow-y: auto;
   }
 
@@ -249,57 +271,7 @@
 
 <div class="eyebrow">A Letter For You</div>
 
-<svg class="bouquet" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- stems -->
-  <g stroke="#8ba377" stroke-width="2.5" stroke-linecap="round">
-    <path d="M110 150 L100 214"/>
-    <path d="M110 150 L110 216"/>
-    <path d="M110 150 L120 214"/>
-    <path d="M110 150 L92 210"/>
-    <path d="M110 150 L128 210"/>
-  </g>
-  <!-- leaves -->
-  <g fill="#8fa97c">
-    <ellipse cx="60" cy="95" rx="22" ry="9" transform="rotate(-35 60 95)"/>
-    <ellipse cx="165" cy="95" rx="22" ry="9" transform="rotate(35 165 95)"/>
-    <ellipse cx="75" cy="70" rx="18" ry="7" transform="rotate(-55 75 70)"/>
-    <ellipse cx="150" cy="70" rx="18" ry="7" transform="rotate(55 150 70)"/>
-    <ellipse cx="110" cy="55" rx="16" ry="6" transform="rotate(0 110 55)"/>
-  </g>
-  <!-- ribbon -->
-  <rect x="100" y="145" width="20" height="12" rx="2" fill="#c9b89a"/>
-  <!-- lilies (white) -->
-  <g fill="#fffaf6" stroke="#ecd9df" stroke-width="1">
-    <path d="M55 130 q10 -20 24 -6 q-14 6 -24 6z"/>
-    <path d="M55 130 q-16 -4 -10 -22 q14 8 10 22z"/>
-    <circle cx="55" cy="128" r="4" fill="#e6c34a"/>
-    <path d="M165 130 q-10 -20 -24 -6 q14 6 24 6z"/>
-    <path d="M165 130 q16 -4 10 -22 q-14 8 -10 22z"/>
-    <circle cx="165" cy="128" r="4" fill="#e6c34a"/>
-  </g>
-  <!-- peonies (pink) -->
-  <g>
-    <circle cx="80" cy="95" r="26" fill="#f6b9cf"/>
-    <circle cx="80" cy="95" r="15" fill="#ec6f9b"/>
-    <circle cx="80" cy="95" r="6" fill="#c4295a"/>
-
-    <circle cx="140" cy="95" r="26" fill="#f6b9cf"/>
-    <circle cx="140" cy="95" r="15" fill="#ec6f9b"/>
-    <circle cx="140" cy="95" r="6" fill="#c4295a"/>
-
-    <circle cx="110" cy="72" r="28" fill="#f8c8db"/>
-    <circle cx="110" cy="72" r="16" fill="#ee7ba3"/>
-    <circle cx="110" cy="72" r="7" fill="#c4295a"/>
-
-    <circle cx="92" cy="118" r="24" fill="#f6b9cf"/>
-    <circle cx="92" cy="118" r="13" fill="#ec6f9b"/>
-    <circle cx="92" cy="118" r="5" fill="#c4295a"/>
-
-    <circle cx="128" cy="118" r="24" fill="#f6b9cf"/>
-    <circle cx="128" cy="118" r="13" fill="#ec6f9b"/>
-    <circle cx="128" cy="118" r="5" fill="#c4295a"/>
-  </g>
-</svg>
+<img class="bouquet" src="bouquet.png" alt="Bouquet">
 
 <div class="envelope-wrap">
   <div class="envelope" id="envelope">
@@ -351,6 +323,7 @@
     // don't trigger open if the click landed on the read button (safety, though it's hidden pre-open)
     opened = true;
     envelope.classList.add('open');
+    document.body.classList.add('letter-open');
   });
 
   readBtn.addEventListener('click', function(e) {
