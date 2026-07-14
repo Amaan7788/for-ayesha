@@ -174,10 +174,10 @@
     pointer-events: none;
   }
   .envelope.open .note-wrap {
-    transform: translate(-50%, -70px);
+    transform: translate(-50%, -6vh);
     opacity: 1;
     pointer-events: auto;
-    width: min(320px, 88vw);
+    width: min(340px, 90vw);
   }
 
   .note {
@@ -191,7 +191,7 @@
     transition: transform 0.9s cubic-bezier(.4,.2,.2,1), min-height 0.6s ease 0.35s;
   }
   .envelope.open .note-inner {
-    min-height: 320px;
+    min-height: clamp(340px, 64vh, 600px);
   }
   .note-inner.flipped {
     transform: rotateY(180deg);
@@ -200,10 +200,12 @@
     position: absolute;
     inset: 0;
     backface-visibility: hidden;
-    background: linear-gradient(180deg, #fffaf6, #fdf1ec);
+    background:
+      repeating-linear-gradient(135deg, rgba(196,41,90,0.04) 0px, rgba(196,41,90,0.04) 1px, transparent 1px, transparent 11px),
+      linear-gradient(180deg, #fffaf6, #fdf1ec);
     border: 1px solid #f0d3c8;
     border-radius: 10px;
-    padding: 20px 16px;
+    padding: 34px 18px 22px;
     box-shadow: 0 12px 24px -12px rgba(122,47,74,0.3);
     display: flex;
     flex-direction: column;
@@ -215,8 +217,50 @@
     transform: rotateY(180deg);
     text-align: left;
     justify-content: flex-start;
-    max-height: 65vh;
+    max-height: 70vh;
     overflow-y: auto;
+  }
+
+  .corner-arrow {
+    position: absolute;
+    top: 12px;
+    width: 20px;
+    height: 20px;
+    opacity: 0.55;
+    color: #c4295a;
+  }
+  .corner-arrow.left { left: 12px; }
+  .corner-arrow.right { right: 12px; transform: scaleX(-1); }
+
+  .card-eyebrow {
+    font-style: italic;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 10px;
+    color: #b5788a;
+    margin-bottom: 14px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0 16px;
+    width: 100%;
+  }
+  .divider .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #d9a9b8, transparent);
+  }
+  .divider .dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #c4295a;
+    flex: 0 0 auto;
   }
 
   .disclaimer {
@@ -288,12 +332,19 @@
       <div class="note">
         <div class="note-inner" id="noteInner">
           <div class="note-face note-front">
-            <div class="disclaimer">Disclaimer:<br>read this alone 🤍</div>
+            <svg class="corner-arrow left" viewBox="0 0 24 24" fill="none"><path d="M20 16c-6 0-12-3-12-10M8 6l-3 0 0 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg class="corner-arrow right" viewBox="0 0 24 24" fill="none"><path d="M20 16c-6 0-12-3-12-10M8 6l-3 0 0 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="card-eyebrow">~ A Letter For You ~</div>
+            <div class="disclaimer">Disclaimer:<br>please read this alone 🤍</div>
             <button class="read-btn" id="readBtn">Click to read</button>
           </div>
           <div class="note-face note-back">
+            <svg class="corner-arrow left" viewBox="0 0 24 24" fill="none"><path d="M20 16c-6 0-12-3-12-10M8 6l-3 0 0 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg class="corner-arrow right" viewBox="0 0 24 24" fill="none"><path d="M20 16c-6 0-12-3-12-10M8 6l-3 0 0 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="card-eyebrow">~ A Letter For You ~</div>
             <div class="letter-body">
               <div class="letter-greeting">Dear Ayesha,</div>
+              <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
               <p>I hope this brings a smile to your face.</p><br>
               <p>When our families met at my home last week, I was so incredibly happy to finally see you. I'll admit, I wanted to talk to you so much, but the excitement and a little bit of shyness got the better of me. Even though we didn't get to share words that evening, just seeing you made it a night I will never forget.</p><br>
               <p>Since my family is visiting your home today and I couldn't be there, I wanted to send a piece of my heart along with these flowers. I wanted to create a moment just for the two of us, free from any shyness.</p><br>
